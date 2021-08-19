@@ -13,7 +13,8 @@
     "buffer": "^6.0.3",
     "react": "17.0.2",
     "react-native": "0.65.0",
-    "react-native-camera": "^4.0.3"
+    "react-native-camera": "^4.0.3",
+    "react-native-spinkit": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

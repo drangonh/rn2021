@@ -14,13 +14,15 @@ import {
 import {RNCamera} from 'react-native-camera';
 import Buffer from "buffer";
 import {getSkinData} from "./Skin";
+import Spinner from 'react-native-spinkit'
 
 export default class TestSkinType extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       // 设置当前摄像头为后置摄像头
-      cameraType: RNCamera.Constants.Type.back
+      cameraType: RNCamera.Constants.Type.back,
+      isVisible: false
     };
   }
 
@@ -60,7 +62,9 @@ export default class TestSkinType extends React.PureComponent {
   _takePicture() {
     this.refs.camera.takePictureAsync().then((response) => {
       console.log("response.uri:", response);
-      this.getDate(response.uri);
+      this.setState({
+        isVisible: true
+      }, () => this.getDate(response.uri));
     }).catch(((error) => {
       console.log(`error:${error}`);
     }));
@@ -92,6 +96,9 @@ export default class TestSkinType extends React.PureComponent {
 
     let t = new Date().getTime();
     getSkinData(url, formData, authorization, (res) => {
+      this.setState({
+        isVisible: false
+      });
       if (res) {
         let t1 = new Date().getTime();
 
@@ -109,24 +116,33 @@ export default class TestSkinType extends React.PureComponent {
   }
 
   render() {
+    const {isVisible} = this.state;
     return (
-        <RNCamera
-          ref="camera"
-          style={styles.container}
-          onBarCodeRead={this._onBarCodeRead.bind(this)}
-          type={this.state.cameraType}
-        >
-          <View style={styles.btnContainer}>
-            <TouchableHighlight style={styles.btn} onPress={this._switchCamera.bind(this)}>
-              <Text style={styles.switch}>切换</Text>
-            </TouchableHighlight>
+      <RNCamera
+        ref="camera"
+        style={styles.container}
+        onBarCodeRead={this._onBarCodeRead.bind(this)}
+        type={this.state.cameraType}
+      >
+        <Spinner style={styles.spinner} isVisible={isVisible} size={100} type={'Circle'} color={"#FFFFFF"}/>
 
-            <TouchableHighlight style={styles.btn} onPress={this._takePicture.bind(this)}>
-              <Text style={styles.picture}>拍照</Text>
-            </TouchableHighlight>
-          </View>
+        <View style={styles.btnContainer}>
+          <TouchableHighlight
+            disabled={isVisible}
+            style={styles.btn}
+            onPress={this._switchCamera.bind(this)}>
+            <Text style={styles.switch}>切换</Text>
+          </TouchableHighlight>
 
-        </RNCamera>
+          <TouchableHighlight
+            disabled={isVisible}
+            style={styles.btn}
+            onPress={this._takePicture.bind(this)}>
+            <Text style={styles.picture}>拍照</Text>
+          </TouchableHighlight>
+        </View>
+
+      </RNCamera>
     );
   }
 }
@@ -165,5 +181,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     color: 'red'
+  },
+  spinner: {
+    marginBottom: 0,
   }
 });
