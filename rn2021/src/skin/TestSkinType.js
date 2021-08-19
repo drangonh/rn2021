@@ -102,12 +102,11 @@ export default class TestSkinType extends React.PureComponent {
       if (res) {
         let t1 = new Date().getTime();
 
-        alert(JSON.stringify(res))
-        // this.props.navigation.navigate('TestSkinTypeDetail', {
-        //   uri: uri,
-        //   data: res,
-        //   time: (t1 - t)
-        // });
+        this.props.navigation.navigate('TestSkinTypeDetail', {
+          uri: uri,
+          data: res,
+          time: (t1 - t)
+        });
       }
     });
 

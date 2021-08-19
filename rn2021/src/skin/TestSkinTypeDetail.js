@@ -60,20 +60,16 @@ export default class TestSkinTypeDetail extends React.PureComponent {
     getSkinData(url, formData, authorization, (res) => {
       if (res) {
         console.log('最终的数据', res);
-        // console.log("______", this);
         this.setState({
           skinData: [{ "年龄": "361 岁" }]
         });
       }
     });
 
-    // console.log("______111", this);
-
   }
 
   render() {
-    // const { skinData } = this.state;
-    const { time, data } = this.props.navigation.state.params;
+    const { time, data } = this.props.route.params;
     console.log("渲染数据：", data);
 
     return (
@@ -89,7 +85,7 @@ export default class TestSkinTypeDetail extends React.PureComponent {
               return null;
             }
             return (
-              <View style={ styles.oneData }>
+              <View style={ styles.oneData } key={Object.values(item)[0]}>
                 <Text style={ styles.oneDataText }>
                   { `${ Object.keys(item)[0] }:${ Object.values(item)[0] }` }
                 </Text>
