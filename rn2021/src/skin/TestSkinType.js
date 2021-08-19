@@ -124,9 +124,9 @@ export default class TestSkinType extends React.PureComponent {
         onBarCodeRead={this._onBarCodeRead.bind(this)}
         type={this.state.cameraType}
       >
-        <Spinner style={styles.spinner} isVisible={isVisible} size={100} type={'Circle'} color={"#FFFFFF"}/>
 
         <View style={{flex:1}}/>
+        <Spinner style={styles.spinner} isVisible={isVisible} size={100} type={'Circle'} color={"#FFFFFF"}/>
         <View style={styles.btnContainer}>
           <TouchableHighlight
             disabled={isVisible}
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     marginBottom: 100,
+    marginTop:100,
     width: '100%',
     height: 100,
     flexDirection: 'row',
