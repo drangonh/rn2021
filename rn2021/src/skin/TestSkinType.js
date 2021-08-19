@@ -126,6 +126,7 @@ export default class TestSkinType extends React.PureComponent {
       >
         <Spinner style={styles.spinner} isVisible={isVisible} size={100} type={'Circle'} color={"#FFFFFF"}/>
 
+        <View style={{flex:1}}/>
         <View style={styles.btnContainer}>
           <TouchableHighlight
             disabled={isVisible}
@@ -149,15 +150,14 @@ export default class TestSkinType extends React.PureComponent {
 
 const styles = StyleSheet.create({
   container: {
-    height: '80%',
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
     position: 'relative'
   },
   btnContainer: {
-    position: 'absolute',
-    bottom: 30,
+    marginBottom: 100,
     width: '100%',
     height: 100,
     flexDirection: 'row',
