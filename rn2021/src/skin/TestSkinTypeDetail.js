@@ -9,10 +9,11 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
 import Buffer from 'buffer';
-import { getSkinData } from "./Skin";
+import {getSkinData} from "./Skin";
 
 export default class TestSkinTypeDetail extends React.PureComponent {
   static propTypes = {};
@@ -43,25 +44,25 @@ export default class TestSkinTypeDetail extends React.PureComponent {
   getDate() {
     const key = '421cda285420ff31440070b2d2a66db9';
     const id = 'fd6143c2c3964f3e';
-    const { uri } = this.props.navigation.state.params;
-    const base64Str = `${ id }:${ key }`;
+    const {uri} = this.props.navigation.state.params;
+    const base64Str = `${id}:${key}`;
     const authorization = new Buffer.Buffer(base64Str).toString('base64');
 
     let formData = new FormData();
     let time = new Date().getTime();
-    let file = { uri: uri, type: 'multipart/form-data', name: `${ time }.jpg` };
+    let file = {uri: uri, type: 'multipart/form-data', name: `${time}.jpg`};
     formData.append("image", file);
 
     const detect_types = 1;
 
-    const url = `https://api.yimei.ai/v2/api/face/analysis/${ detect_types }`;
+    const url = `https://api.yimei.ai/v2/api/face/analysis/${detect_types}`;
 
 
     getSkinData(url, formData, authorization, (res) => {
       if (res) {
         console.log('最终的数据', res);
         this.setState({
-          skinData: [{ "年龄": "361 岁" }]
+          skinData: [{"年龄": "361 岁"}]
         });
       }
     });
@@ -69,25 +70,37 @@ export default class TestSkinTypeDetail extends React.PureComponent {
   }
 
   render() {
-    const { time, data } = this.props.route.params;
+    const {time, data, imageUrlPre} = this.props.route.params;
     console.log("渲染数据：", data);
 
     return (
-      <ScrollView style={ { backgroundColor: '#FFF' } }>
-        <View style={ styles.oneData }>
-          <Text style={ styles.oneDataText }>
-            { `用时:${ time }` }
+      <ScrollView style={{backgroundColor: '#FFF'}}>
+        <View style={styles.oneData}>
+          <Text style={styles.oneDataText}>
+            {`用时:${time}`}
           </Text>
         </View>
         {
           data.map((item, index) => {
-            if (!item || Object.values(item)[0].indexOf('无该特征') != -1) {
+            if (!item ||
+              !Object.values(item)[0] ||
+              Object.prototype.toString.call(Object.values(item)[0]).slice(8, -1) == 'Array' ||
+              Object.keys(item)[0] == 'undefined'
+            ) {
               return null;
             }
+            if (Object.values(item)[0].toString().indexOf('.jpg') != -1) {
+              return (
+                <View>
+                  <Image source={{uri: imageUrlPre + Object.values(item)[0].toString()}}
+                         style={{width: 100, height: 120}}/>
+                </View>
+              )
+            }
             return (
-              <View style={ styles.oneData } key={Object.values(item)[0]}>
-                <Text style={ styles.oneDataText }>
-                  { `${ Object.keys(item)[0] }:${ Object.values(item)[0] }` }
+              <View style={styles.oneData} key={Object.values(item)[0]}>
+                <Text style={styles.oneDataText}>
+                  {`${Object.keys(item)[0]}:${Object.values(item)[0]}`}
                 </Text>
               </View>
             );

@@ -16,6 +16,8 @@ import Buffer from "buffer";
 import {getSkinData} from "./Skin";
 import Spinner from 'react-native-spinkit'
 
+const useState = React.useState;
+
 export default class TestSkinType extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -80,8 +82,8 @@ export default class TestSkinType extends React.PureComponent {
    * result_type  int  否  结果类型 0-效果图 1-坐标 2-效果图和坐标 默认0
    */
   getDate(uri) {
-    const key = '421cda285420ff31440070b2d2a66db9';
-    const id = 'fd6143c2c3964f3e';
+    const key = '827779b9b2fa4a58a2e1f0ad70fdab32';
+    const id = '5530cff531fddf5e';
     const base64Str = `${id}:${key}`;
     const authorization = new Buffer.Buffer(base64Str).toString('base64');
 
@@ -90,7 +92,7 @@ export default class TestSkinType extends React.PureComponent {
     let file = {uri: uri, type: 'multipart/form-data', name: `${time}.jpg`};
     formData.append("image", file);
 
-    const detect_types = 1;
+    const detect_types = 137439457439;
 
     const url = `https://api.yimei.ai/v2/api/face/analysis/${detect_types}`;
 
@@ -105,13 +107,11 @@ export default class TestSkinType extends React.PureComponent {
         this.props.navigation.navigate('TestSkinTypeDetail', {
           uri: uri,
           data: res,
-          time: (t1 - t)
+          time: (t1 - t),
+          imageUrlPre: 'https://api.yimei.ai/fileSvr/get/'
         });
       }
     });
-
-    // console.log("______111", this);
-
   }
 
   render() {
@@ -124,7 +124,7 @@ export default class TestSkinType extends React.PureComponent {
         type={this.state.cameraType}
       >
 
-        <View style={{flex:1}}/>
+        <View style={{flex: 1}}/>
         <Spinner style={styles.spinner} isVisible={isVisible} size={100} type={'Circle'} color={"#FFFFFF"}/>
         <View style={styles.btnContainer}>
           <TouchableHighlight
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     marginBottom: 100,
-    marginTop:100,
+    marginTop: 100,
     width: '100%',
     height: 100,
     flexDirection: 'row',
