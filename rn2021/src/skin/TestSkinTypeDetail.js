@@ -91,15 +91,16 @@ export default class TestSkinTypeDetail extends React.PureComponent {
             }
             if (Object.values(item)[0].toString().indexOf('.jpg') != -1) {
               return (
-                <View>
+                <View key={Object.values(item)[0]+'_'+index}>
                   <Image source={{uri: imageUrlPre + Object.values(item)[0].toString()}}
-                         style={{width: 100, height: 120}}/>
+                         style={{width: 200, height: 240}}/>
                 </View>
               )
             }
             return (
-              <View style={styles.oneData} key={Object.values(item)[0]}>
-                <Text style={styles.oneDataText}>
+              <View style={[styles.oneData]} key={Object.values(item)[0]+'_'+index}>
+                <Text
+                  style={[styles.oneDataText, {color: Object.values(item)[0].toString().indexOf('如下') != -1 ? "#000" : '#eee000'}]}>
                   {`${Object.keys(item)[0]}:${Object.values(item)[0]}`}
                 </Text>
               </View>
